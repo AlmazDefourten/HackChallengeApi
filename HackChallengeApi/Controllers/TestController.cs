@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HackChallengeApi.AudioHandler;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +72,11 @@ namespace HackChallengeApi.Controllers
         {
             context.TestClass.Add(testClass);
             await context.SaveChangesAsync();
+            
+            string filePath = "test.mp3";
+            byte[] audioBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            var hub = new AudioHub();
+            await hub.SendAudioStream(audioBytes);
 
             return CreatedAtAction("GetTestClass", new { id = testClass.Id }, testClass);
         }

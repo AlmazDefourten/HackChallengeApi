@@ -27,14 +27,18 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseRouting();
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<AudioHub>("/audiohub");
+});
+
 app.MapIdentityApi<AppUser>();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
