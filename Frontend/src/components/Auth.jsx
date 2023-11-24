@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {Form, Button } from 'react-bootstrap';
-import { AuthService } from "../services/auth.service";
 
 function Auth() {
 
