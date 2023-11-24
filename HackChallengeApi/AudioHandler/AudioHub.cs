@@ -1,4 +1,6 @@
-﻿namespace HackChallengeApi.AudioHandler;
+﻿using Microsoft.AspNetCore.SignalR;
+
+namespace HackChallengeApi.AudioHandler;
 
 public class AudioHub : Hub
 {

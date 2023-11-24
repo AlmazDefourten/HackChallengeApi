@@ -1,6 +1,8 @@
-﻿namespace HackChallengeApi.Models;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class AppUser
+namespace HackChallengeApi.Models;
+
+public class AppUser : IdentityUser
 {
     
 }
