@@ -1,6 +1,4 @@
-@HackChallengeApi_HostAddress = http://localhost:5159
-
-GET {{HackChallengeApi_HostAddress}}/weatherforecast/
+GET http://localhost:5159/api/Test
 Accept: application/json
 
 ###

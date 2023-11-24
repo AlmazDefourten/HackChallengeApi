@@ -36,11 +36,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<AudioHub>("/audiohub");
-});
-
 app.UseHttpsRedirection();
 
 app.MapControllerRoute(
