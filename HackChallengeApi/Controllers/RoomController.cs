@@ -1,26 +1,35 @@
 ﻿namespace HackChallengeApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using HackChallengeApi.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
 public class RoomController : ControllerBase
 {
-    private readonly List<Room> _rooms = new List<Room>();
-    private int _nextRoomId = 1;
+    private readonly AppDbContext _context;
+    
+    public RoomController(AppDbContext context)
+    {
+        _context = context;
+    }
     
     // GET: api/room
     [HttpGet]
-    public IActionResult GetRooms()
+    public async Task<IActionResult> GetRooms()
     {
-        return Ok(_rooms);
+        var rooms = await _context.Rooms.ToListAsync();
+        return Ok(rooms);
     }
 
     // GET: api/room/{id}
     [HttpGet("{id}")]
-    public IActionResult GetRoom(int id)
+    public async Task<IActionResult> GetRoom(int id)
     {
-        var room = _rooms.Find(r => r.Id == id);
+        var room = await _context.Rooms.FindAsync(id);
+
         if (room == null)
         {
             return NotFound();
@@ -31,25 +40,26 @@ public class RoomController : ControllerBase
 
     // POST: api/room
     [HttpPost]
-    public IActionResult CreateRoom([FromBody] Room room)
+    public async Task<IActionResult> CreateRoom([FromBody] Room room)
     {
-        room.Id = _nextRoomId++;
-        _rooms.Add(room);
+        _context.Rooms.Add(room);
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetRoom), new { id = room.Id }, room);
     }
 
     // DELETE: api/room/{id}
     [HttpDelete("{id}")]
-    public IActionResult DeleteRoom(int id)
+    public async Task<IActionResult> DeleteRoom(int id)
     {
-        var room = _rooms.Find(r => r.Id == id);
+        var room = await _context.Rooms.FindAsync(id);
         if (room == null)
         {
             return NotFound();
         }
 
-        _rooms.Remove(room);
+        _context.Rooms.Remove(room);
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
