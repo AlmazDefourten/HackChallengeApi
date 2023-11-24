@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import './fonts/TTF/Compact/MTSCompact-Medium.ttf'
+import './fonts/Bahnschrift/Bahnschrift.ttf'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
