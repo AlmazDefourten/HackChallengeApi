@@ -29,7 +29,7 @@ function Auth() {
             <Button variant="primary" onClick={()=>{setIsLoged(prev => !prev)}}>Создать аккаунт</Button>
         </div> :
         <div style={{display: 'flex', alignItems: 'center', flexDirection:'column'}}>
-            <p>Есть аккаунт?</p>
+            <p className="font-bahnschrift">Есть аккаунт?</p>
             <Button variant="primary" onClick={()=>{setIsLoged(prev => !prev)}}>Войти в аккаунт</Button>
         </div>}
         </>

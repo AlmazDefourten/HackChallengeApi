@@ -7,23 +7,27 @@ import RoomCard from './components/Card';
 import CardsGrid from './components/CardsGrid';
 import {Routes, Route} from "react-router-dom";
 import Auth from './components/Auth';
-
+import Header from './components/header/header';
+import Home from './components/home/home'
+;
 function App() {
 
   const [roomNumber, setRoomNumber] = useState(0);
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <Header />
+      {/* <header className="App-header"> */}
         <Routes>
           {/* <Route path='/' element={<CardsGrid />}/> */}
-          <Route path='/' element={<Auth />}/>
+          {/* <Route path='/' element={<Auth />}/> */}
+          <Route path='/' element={<Home />}/>
           <Route path='/RoomLofi' element={<Room title="Lofi"/>}/>
           <Route path='/RoomRock' element={<Room title="Rock"/>}/>
           <Route path='/RoomShanson' element={<Room title="Shanson"/>}/>
         </Routes>
         {/* <Room/> */}
-      </header>
+      {/* </header> */}
     </div>
   );
 }

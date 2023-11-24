@@ -1,0 +1,30 @@
+.font-size{
+    font-size: 99px;
+}
+
+.login_button_and_title_and_home_links{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 1vw 0 1vw;
+}
+
+.title_and_home_links{
+    display: flex;
+    align-items: center;
+    gap: 5vw;
+}
+
+.title{
+    display: flex;
+    flex-direction: column;
+    line-height: 4vh;
+}
+
+.home_links{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 2vw;
+}
+
