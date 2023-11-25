@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
 namespace HackChallengeApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using HackChallengeApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using HackChallengeApi.AudioHandler;
 
 [ApiController]
 [Authorize]
@@ -13,10 +16,14 @@ using Microsoft.EntityFrameworkCore;
 public class RoomController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly IHubContext<AudioHub> _audioHubContext;
     
-    public RoomController(AppDbContext context)
+    public RoomController(AppDbContext context, UserManager<AppUser> userManager, IHubContext<AudioHub> audioHubContext)
     {
         _context = context;
+        _userManager = userManager;
+        _audioHubContext = audioHubContext;
     }
     
     // GET: api/room
@@ -65,5 +72,72 @@ public class RoomController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
+    }
+    
+    // POST: api/room/{id}/join
+    [HttpPost("{id}/join")]
+    public async Task<IActionResult> JoinRoom(int id)
+    {
+        var room = await _context.Rooms.FindAsync(id);
+        if (room == null)
+        {
+            return NotFound();
+        }
+
+        var user = await _userManager.GetUserAsync(User); // Получаем текущего пользователя из контекста аутентификации
+
+        // Проверка наличия пользователя в комнате
+        if (room.Users.Contains(user.Username))
+        {
+            return BadRequest("User already in the room");
+        }
+
+        // Обновление информации о пользователе и комнате в базе данных
+        user.CurrentRoomId = id;
+        room.Users.Add(user.Username);
+
+        _context.Entry(user).State = EntityState.Modified;
+        _context.Entry(room).State = EntityState.Modified;
+
+        await _context.SaveChangesAsync();
+        
+        // Присоединение пользователя к комнате в SignalR Hub
+        await _audioHubContext.Clients.Client(HttpContext.Connection.Id).SendAsync("JoinRoom", id);
+        
+        return Ok("Joined the room");
+    }
+
+    // POST: api/room/leave
+    [HttpPost("leave")]
+    public async Task<IActionResult> LeaveRoom()
+    {
+        var user = await _userManager.GetUserAsync(User); // Получаем текущего пользователя из контекста аутентификации
+
+        // Проверка наличия пользователя в комнате
+        if (user.CurrentRoomId == null)
+        {
+            return BadRequest("User is not in a room");
+        }
+        
+        var roomId = user.CurrentRoomId.Value;
+        var room = await _context.Rooms.FindAsync(roomId);
+        if (room == null)
+        {
+            return BadRequest("User is not in a valid room");
+        }
+
+        // Обновление информации о пользователе и комнате в базе данных
+        user.CurrentRoomId = null;
+        room.Users.Remove(user.Username);
+
+        _context.Entry(user).State = EntityState.Modified;
+        _context.Entry(room).State = EntityState.Modified;
+        
+        await _context.SaveChangesAsync();
+        
+        // Отсоединение пользователя от комнаты в SignalR Hub
+        await _audioHubContext.Clients.Client(HttpContext.Connection.Id).SendAsync("LeaveRoom", roomId);
+        
+        return Ok("Left the room");
     }
 }
