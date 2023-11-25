@@ -10,10 +10,10 @@
     <input type="button" id="sendBtn" value="Отправить" />
 </div>
 <div id="chatroom"></div>
-<script src="/node_modules/@microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="../../Frontend/node_modules/@microsoft/signalr/dist/browser/signalr.js"></script>
 <script>
     const hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:7655/audiohub")
+        .withUrl("http://31.129.105.161:80/audiohub")
         .build();
 
     hubConnection.on("SendTestAudio", function (data) {

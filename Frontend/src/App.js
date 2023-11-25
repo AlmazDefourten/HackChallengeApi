@@ -14,6 +14,8 @@ import axios from 'axios';
 import { API_URL } from './api/axios.api';
 import { change_auth } from './redux/features/userSlice';
 import { socket } from './components/socket';
+import Radio from './components/Radio';
+import AudioChat from './components/Radio2';
 
 function App() {
 
@@ -52,7 +54,7 @@ function App() {
      .then((result)=>{
         // console.log('asdasd')
         const {data} = result;
-        console.log(data)
+        // console.log(data)
         localStorage.setItem('accessToken', data.accessToken)
         localStorage.setItem('refreshToken', data.refreshToken)
         dispatch(change_auth(true))
@@ -66,12 +68,13 @@ function App() {
       <header className="App-header">
         {isAuth ?
         <Routes>
-          <Route path='/' element={<CardsGrid />}/>
-          {/* <Route path='/' element={<Auth />}/> */}
+          {/* <Route path='/' element={<CardsGrid />}/> */}
+          {/* <Route path='/' element={<AudioChat />}/> */}
+          <Route path='/' element={<Radio />}/>
           {/* <Route path='/' element={<Home />}/> */}
-          <Route path='/RoomLofi' element={<Room title="Lofi"/>}/>
+          {/* <Route path='/RoomLofi' element={<Room title="Lofi"/>}/>
           <Route path='/RoomRock' element={<Room title="Rock"/>}/>
-          <Route path='/RoomShanson' element={<Room title="Shanson"/>}/>
+          <Route path='/RoomShanson' element={<Room title="Shanson"/>}/> */}
         </Routes>
         :
         <Routes>

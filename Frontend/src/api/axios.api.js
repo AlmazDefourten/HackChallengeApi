@@ -10,7 +10,7 @@ import axios from "axios";
 // })
 
 
-export const API_URL = "https://hacsdfsdf-defourten.amvera.io";
+export const API_URL = "http://31.129.105.161";
 
 const $api = axios.create({
     withCredentials: true,
