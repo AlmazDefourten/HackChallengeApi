@@ -18,7 +18,7 @@ const $api = axios.create({
 })
 
 $api.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+    config.headers.Authorization = `Bearer ${localStorage.getItem('refreshToken')}`
     return config;
 })
 
@@ -26,25 +26,29 @@ $api.interceptors.response.use((config) =>{
     return config;
 }, (error) =>{
     const originalRequest = error.config
-    console.log(error)
-    // if (error.response.status === 401 && error.config && !originalRequest._isRetry){
-    //     originalRequest._isRetry = true
-    //     try{
-    //         axios({
-    //             method:'get',
-    //             url: `${API_URL}/user/refresh`,
-    //             withCredentials: true
-    //          })
-    //          .then((result)=>{
-    //             const {data} = result;
-    //             localStorage.setItem('token', data.access_token)
-    //          })
-    //          return $api.request(originalRequest)
-    //     } catch(e) {
-    //         console.log("ВЫ НЕ АВТОРИЗОВАНЫ")
-    //     }
-        
-    // }
+    // console.log(originalRequest)
+    if (error.response.status === 400 && error.config){
+        console.log("НЕВЕРНЫЕ ДАННЫЕ")
+        return
+    }
+
+    if (error.response.status === 401 && error.config && !originalRequest._isRetry){
+        originalRequest._isRetry = true
+        try{
+            axios({
+                method:'get',
+                url: `${API_URL}/refresh`,
+                withCredentials: true
+             })
+             .then((result)=>{
+                const {data} = result;
+                localStorage.setItem('token', data.access_token)
+             })
+             return $api.request(originalRequest)
+        } catch(e) {
+            console.log("ВЫ НЕ АВТОРИЗОВАНЫ")
+        }
+    }
     throw error;
 })
 
