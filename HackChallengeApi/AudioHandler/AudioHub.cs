@@ -2,7 +2,7 @@
 
 namespace HackChallengeApi.AudioHandler;
 
-public class AudioHub : Hub
+public class AudioHub(MinioRepository.MinioRepository minioRepo) : Hub
 {
     public async Task JoinRoom(int roomId)
     {
@@ -22,8 +22,7 @@ public class AudioHub : Hub
     }
     public async Task SendTestAudio()
     {
-        string filePath = "test.mp3";
-        byte[] audioBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        var audioBytes = await minioRepo.GetObject();
         await Clients.All.SendAsync("SendTestAudio", audioBytes);
     }
 }
