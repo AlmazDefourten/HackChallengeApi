@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HackChallengeApi.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace HackChallengeApi.Controllers
 {

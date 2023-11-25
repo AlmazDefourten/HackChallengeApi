@@ -1,4 +1,6 @@
-﻿namespace HackChallengeApi.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace HackChallengeApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using HackChallengeApi.Models;
 using System.Collections.Generic;
@@ -6,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class RoomController : ControllerBase
 {
