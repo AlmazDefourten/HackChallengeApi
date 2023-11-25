@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Cors;
 namespace HackChallengeApi.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors]
     [ApiController]
     public class TestController(AppDbContext context) : ControllerBase
     {
