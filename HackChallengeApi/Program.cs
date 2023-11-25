@@ -42,6 +42,9 @@ app.UseCors(bld =>
         .AllowCredentials();
 });
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<AudioHub>("/audiohub");
