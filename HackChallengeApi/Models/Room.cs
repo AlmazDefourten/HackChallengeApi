@@ -6,5 +6,5 @@ public class Room
     public string Name { get; set; }
     public List<string> Users { get; set; } = new List<string>();
     public int? CurrentTrackId { get; set; }
-    public AudioFile CurrentTrack { get; set; }
+    public AudioFile? CurrentTrack { get; set; }
 }
