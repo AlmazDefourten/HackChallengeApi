@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HackChallengeApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231125122849_AudioFiles")]
-    partial class AudioFiles
+    [Migration("20231125154146_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
