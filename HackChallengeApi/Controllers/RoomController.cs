@@ -140,4 +140,59 @@ public class RoomController : ControllerBase
         
         return Ok("Left the room");
     }
+    
+    // POST: api/room/changeTrack
+    [HttpPost("{id}/changeTrack/{audioId}")]
+    public async Task<IActionResult> ChangeTrack(int id, int audioId)
+    {
+        var room = await _context.Rooms.Include(r => r.CurrentTrack).FirstOrDefaultAsync(r => r.Id == id);
+        if (room == null)
+        {
+            return NotFound();
+        }
+
+        // Поиск аудиофайла по его идентификатору
+        var newTrack = await _context.AudioFiles.FindAsync(audioId);
+        if (newTrack == null)
+        {
+            return NotFound("Audio not found");
+        }
+
+        // Обновление информации о текущем треке в комнате в базе данных
+        room.CurrentTrack = newTrack;
+        room.CurrentTrackId = newTrack.Id;
+        _context.Entry(room).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        // Отправка события в SignalR
+        await _audioHubContext.Clients.Group(id.ToString()).SendAsync("TrackChanged", newTrack);
+        
+        string filePath = "test.mp3";
+        byte[] audioData = await System.IO.File.ReadAllBytesAsync(filePath);
+        
+        await _audioHubContext.Clients.Group(id.ToString()).SendAsync("ReceiveAudioStream", audioData);
+        
+        return Ok("Track changed");
+    }
+    
+    // POST: api/room/removeTrack
+    [HttpPost("{id}/removeTrack")]
+    public async Task<IActionResult> RemoveTrack(int id)
+    {
+        var room = await _context.Rooms.Include(r => r.CurrentTrack).FirstOrDefaultAsync(r => r.Id == id);
+        if (room == null)
+        {
+            return NotFound();
+        }
+
+        // Удаление информации о текущем треке в комнате в базе данных
+        room.CurrentTrack = null;
+        _context.Entry(room).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        // Отправка события в SignalR
+        await _audioHubContext.Clients.Group(id.ToString()).SendAsync("TrackRemoved");
+        
+        return Ok("Track removed");
+    }
 }

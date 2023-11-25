@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 //kinda reducer itself
 export const userSlice = createSlice({
     name: 'user',
-    initialState: false,
+    initialState: {isAuth: false},
     reducers:{
         change_auth: (state, action) =>{
             state.isAuth = action.payload

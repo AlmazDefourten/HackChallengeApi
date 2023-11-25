@@ -13,46 +13,36 @@ function Auth() {
     const [password, setPassword] = useState('');
 
     const regURL = '/register'
+    // const regURL = '/api/Test'
 
     const onSubmitRegistration = (email, password) => $api.post(regURL, {
-        headers: {
-                'Content-Type': 'application/json'
-            },
-        body: JSON.stringify({
-                email,
-                password,
-            }
-        )
+        email,
+        password,
     })
-    .then(
-        (result) => {
-            console.log(result);
-            const {data} = result;
-            console.log(data)
-            localStorage.setItem('token', data.access_token)
-            console.log(localStorage.getItem('token'))
-        });
+    // .then(
+    //     (result) => {
+    //         // console.log(result);
+    //         console.log("AAAAAAAAAAAAAAAA");
+    //         const {data} = result;
+    //         console.log(result)
+    //         localStorage.setItem('token', data.access_token)
+    //         console.log(localStorage.getItem('token'))
+    //     });
 
 
     const authURL = '/login'
 
     const onSubmitAuth = (email, password) => $api.post(authURL, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-                email,
-                password,
-            }
-        )
+        email,
+        password,
     })
     .then(
         (result) => {
             const {data} = result;
-            console.log(data)
-            localStorage.setItem('token', data.access_token)
+            // console.log(data)
+            localStorage.setItem('accessToken', data.accessToken)
+            localStorage.setItem('refreshToken', data.refreshToken)
             dispatch(change_auth(true))
-            console.log(localStorage.getItem('token'))
         });
 
     return ( 
