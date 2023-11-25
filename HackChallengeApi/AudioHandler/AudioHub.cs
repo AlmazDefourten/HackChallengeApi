@@ -20,8 +20,10 @@ public class AudioHub : Hub
     {
         await Clients.Group(roomId.ToString()).SendAsync("ReceiveAudioStream", audioData);
     }
-    public async Task SendAudioStream(byte[] audioData)
+    public async Task SendTestAudio()
     {
-        await Clients.All.SendAsync("ReceiveAudioStream", audioData);
+        string filePath = "test.mp3";
+        byte[] audioBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        await Clients.All.SendAsync("SendTestAudio", audioBytes);
     }
 }
