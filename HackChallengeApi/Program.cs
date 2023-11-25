@@ -36,10 +36,10 @@ app.UseRouting();
 
 app.UseCors(bld =>
 {
-    bld.AllowCredentials()
-        .WithOrigins("http://localhost:3000/", "https://localhost:3000/")
+    bld.SetIsOriginAllowed(_ => true)
         .AllowAnyMethod()
-        .AllowAnyHeader();
+        .AllowAnyHeader()
+        .AllowCredentials();
 });
 
 app.UseEndpoints(endpoints =>
