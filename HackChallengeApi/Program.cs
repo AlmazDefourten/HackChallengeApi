@@ -36,7 +36,7 @@ app.UseRouting();
 
 app.UseCors(bld =>
 {
-    bld
+    bld.AllowCredentials()
         .AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader();
