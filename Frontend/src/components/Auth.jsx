@@ -19,7 +19,8 @@ function Auth() {
         email,
         password,
     })
-    // .then(
+    .catch(() => alert('Введены некорректыне данные или ошибка сервера'));
+    // .then(  console.error('Error invoking SendTestAudio:', error)
     //     (result) => {
     //         // console.log(result);
     //         console.log("AAAAAAAAAAAAAAAA");
@@ -43,7 +44,9 @@ function Auth() {
             localStorage.setItem('accessToken', data.accessToken)
             localStorage.setItem('refreshToken', data.refreshToken)
             dispatch(change_auth(true))
-        });
+        })
+    .catch(() => alert('Почта занята или введены некорректыне данные'));
+    alert('Пароль дожен состоять миниму из 9 цифр, иметь заглавные и прописные буквы, цифры, знаки')
 
     return ( 
         <>
@@ -73,11 +76,11 @@ function Auth() {
         </div>
         {isLoged ? 
         <div style={{display: 'flex', alignItems: 'center', flexDirection:'column'}}>
-            <p className="font-mts-wide-medium">Нет аккаунта?</p>
+            <p>Нет аккаунта?</p>
             <Button variant="primary" onClick={()=>{setIsLoged(prev => !prev)}}>Создать аккаунт</Button>
         </div> :
         <div style={{display: 'flex', alignItems: 'center', flexDirection:'column'}}>
-            <p className="font-bahnschrift">Есть аккаунт?</p>
+            <p>Есть аккаунт?</p>
             <Button variant="primary" onClick={()=>{setIsLoged(prev => !prev)}}>Войти в аккаунт</Button>
         </div>}
         </>

@@ -59,6 +59,7 @@ function App() {
         localStorage.setItem('refreshToken', data.refreshToken)
         dispatch(change_auth(true))
      })
+     .catch(() => alert('Ошибка refresh-токена. Если данная ошибка появляется много раз, очистите локальное хранилище'))
     }
   }, [dispatch])
 
@@ -68,9 +69,9 @@ function App() {
       <header className="App-header">
         {isAuth ?
         <Routes>
-          {/* <Route path='/' element={<CardsGrid />}/> */}
+          <Route path='/' element={<CardsGrid />}/>
           {/* <Route path='/' element={<AudioChat />}/> */}
-          <Route path='/' element={<Radio />}/>
+          {/* <Route path='/' element={<Radio />}/> */}
           {/* <Route path='/' element={<Home />}/> */}
           {/* <Route path='/RoomLofi' element={<Room title="Lofi"/>}/>
           <Route path='/RoomRock' element={<Room title="Rock"/>}/>
@@ -79,20 +80,10 @@ function App() {
         :
         <Routes>
           <Route path='/' element={<Auth />}/>
-          <Route path="*" element={ <Navigate to='/AuthPage' replace /> }/>
+          <Route path="*" element={ <Navigate to='/' replace /> }/>
         </Routes>
         }
       </header>
-
-      
-      {/* <header className="App-header">
-        <Routes>
-          <Route path='/' element={<Home />}/>
-          <Route path='/RoomLofi' element={<Room title="Lofi"/>}/>
-          <Route path='/RoomRock' element={<Room title="Rock"/>}/>
-          <Route path='/RoomShanson' element={<Room title="Shanson"/>}/>
-        </Routes>
-      </header> */}
     </div>
   );
 }
