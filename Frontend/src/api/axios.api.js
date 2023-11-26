@@ -28,6 +28,13 @@ $api.interceptors.response.use((config) =>{
     const originalRequest = error.config
     // console.log(originalRequest)
     if (error.response.status === 400 && error.config){
+        alert('Почта занята или введены некорретные данные')
+        console.log("НЕВЕРНЫЕ ДАННЫЕ")
+        return
+    }
+
+    if (error.response.status === 405 && error.config){
+        alert('Введены некорретные данные')
         console.log("НЕВЕРНЫЕ ДАННЫЕ")
         return
     }

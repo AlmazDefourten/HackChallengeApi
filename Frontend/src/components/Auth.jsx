@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {Form, Button } from 'react-bootstrap';
 import $api from "../api/axios.api";
 import { useDispatch } from 'react-redux';
 import { change_auth } from '../redux/features/userSlice';
 
 function Auth() {
+
+    useEffect(()=>{
+        alert('Пароль дожен состоять миниму из 9 цифр, иметь заглавные и прописные буквы, цифры, знаки')
+    }, [])
 
     const dispatch = useDispatch();
 
@@ -19,7 +23,10 @@ function Auth() {
         email,
         password,
     })
-    .catch(() => alert('Введены некорректыне данные или ошибка сервера'));
+    .catch((error) => {
+        alert('Введены некорректные данные или ошибка сервера')
+        console.log("Ошибка:", error)
+    });
     // .then(  console.error('Error invoking SendTestAudio:', error)
     //     (result) => {
     //         // console.log(result);
@@ -45,8 +52,11 @@ function Auth() {
             localStorage.setItem('refreshToken', data.refreshToken)
             dispatch(change_auth(true))
         })
-    .catch(() => alert('Почта занята или введены некорректыне данные'));
-    alert('Пароль дожен состоять миниму из 9 цифр, иметь заглавные и прописные буквы, цифры, знаки')
+    .catch((error) => {
+        alert('Почта занята или введены некорректные данные. Закройте окно ошибки или перезагрузите страницу')
+        console.log("Ошибка:", error)
+        
+    });
 
     return ( 
         <>
